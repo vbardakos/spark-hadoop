@@ -22,14 +22,17 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import javax.sound.midi.Sequence;
 
+/**
+ * Student ID: 2644751
+ */
+
 public class DNASeqCount
 {
 
 	// The mapper class
 	public static class SeqMapper extends Mapper<Object, Text, Text, TwoIntWritable>
 	{
-		ArrayList<Pattern> sequence = new ArrayList<>();
-		Position pos = new Position(sequence);
+		ArrayList<Position> sequence = new ArrayList<>();
 		TwoIntWritable myWritable = new TwoIntWritable();
 
 		/**
@@ -40,32 +43,30 @@ public class DNASeqCount
 	     * @param context 	The Hadoop context object
 	     */
 	    public void map(Object index, Text value, Context context) throws IOException, InterruptedException
-	    {
-	    	int start;
-	    	int end;
+		{
+			Iterator<Position> sequenceIter = sequence.iterator();
 
-	    	for (int pairCounter = 0; pairCounter < sequence.size(); pairCounter++)
+			while (sequenceIter.hasNext())
 			{
-				pos.value = value;
-				start = pos.start(pairCounter,0);
-				end = pos.end(pairCounter,0);
+				Position protein = sequenceIter.next();
+				protein.setValue(value.toString());
+
+				int start = protein.start(0);
+				int end = protein.end(0);
 
 				while (start != -1 && end != -1)
 				{
 					if (start+2 < end)
 					{
+						myWritable.setDistance(protein.getDistance());
+						context.write(new Text(protein.toString()), myWritable);
 
-						myWritable.setDistance(end - start - 3);
-
-						context.write(new Text(sequence.get(pairCounter).toString()), myWritable);
-
-						start = pos.start(pairCounter,end+1);
+						start = protein.start(end+1);
 					}
-					end = pos.end(pairCounter,end+1);
+					end = protein.end(end+1);
 				}
 			}
 		}
-
 
 	    public void setup(Context context)
 	    	// Load in any data you need for your mapper here...
@@ -77,14 +78,14 @@ public class DNASeqCount
 				// Now use the tag after the # in the original filename as the
 				// internal HDFS filename reference.
 				BufferedReader br = new BufferedReader(new FileReader(fname[0]));
-				String cache_line=br.lines().collect(Collectors.joining(System.lineSeparator())); // https://www.baeldung.com/java-buffered-reader
+				String cache_line=br.lines().collect(Collectors.joining(System.lineSeparator()));
 				String parts[] = cache_line.split("[\n]");
 
 				String codon[];
 				for (String pairs : parts)
 				{
 					codon = pairs.split(",");
-					sequence.add(new Pattern(codon[0],codon[1]));
+					sequence.add(new Position(codon[0],codon[1]));
 				}
 
 				br.close();
@@ -97,17 +98,14 @@ public class DNASeqCount
 	    }
 
 	}
-	
-	/**
-	* Combiner Class
-	*/
+
+	// The Combiner class
 	public static class SeqCombiner extends Reducer<Text,TwoIntWritable,Text,TwoIntWritable>
 	{
+		TwoIntWritable myWritable = new TwoIntWritable();
 
-	    public void reduce(Text key, Iterable<TwoIntWritable> values, Context context) throws IOException, InterruptedException
+		public void reduce(Text key, Iterable<TwoIntWritable> values, Context context) throws IOException, InterruptedException
 	    {
-			TwoIntWritable myWritable = new TwoIntWritable();
-
 			int sum = 0;
 			int counter = 0;
 
@@ -123,16 +121,13 @@ public class DNASeqCount
 			context.write(key, myWritable);
 		}
 	}
-	/**
-	* Reducer Class
-	*/
+
+	// The Reducer class
 	public static class SeqReducer extends Reducer<Text,TwoIntWritable,Text,FloatWritable>
 	{
 
 	    public void reduce(Text key, Iterable<TwoIntWritable> values, Context context) throws IOException, InterruptedException
 	    {
-			// ArrayList<Float> output = new ArrayList<>();
-
 			int sum = 0;
 			int counter = 0;
 
@@ -143,16 +138,17 @@ public class DNASeqCount
 			}
 
 			float average = (float) sum/counter;
+
 			context.write(key, new FloatWritable(average));
 	    }
 	}
 
 
-	  /**
-	   * main program that will be run, including configuration setup
-	   *
-	   * @param args		Command line arguments
-	   */
+//	  /**
+//	   * main program that will be run, including configuration setup
+//	   *
+//	   * @param args		Command line arguments
+//	   */
 	  public static void main(String[] args) throws Exception
 	  {
 	    Configuration conf = new Configuration();

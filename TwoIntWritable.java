@@ -10,7 +10,6 @@ public class TwoIntWritable implements Writable
     private IntWritable distance;
     private IntWritable count;
 
-
     public TwoIntWritable()
     {
         distance = new IntWritable();

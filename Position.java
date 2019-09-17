@@ -1,25 +1,32 @@
-import org.apache.hadoop.io.Text;
-import java.util.ArrayList;
-
-public class Position
+public class Position extends Pattern
 {
-    private ArrayList<Pattern> sequence;
-    protected Text value;
+    private String value;
+    private int start;
+    private int end;
 
-    public Position(ArrayList<Pattern> mySequence)
-    {
-        this.sequence = mySequence;
+    public Position(String start, String end) {
+        super(start, end);
     }
 
-    public int start(int codonPosition, int indexStart)
+    public void setValue(String myValue)
     {
-        int start = value.toString().indexOf(sequence.get(codonPosition).getStart(),indexStart);
+        this.value = myValue;
+    }
+
+    public int start(int index)
+    {
+        this.start = value.indexOf(super.getStart(),index);
         return start;
     }
 
-    public int end(int codonPosition, int indexEnd)
+    public int end(int index)
     {
-        int end = value.toString().indexOf(sequence.get(codonPosition).getEnd(), indexEnd);
+        this.end = value.indexOf(super.getEnd(), index);
         return end;
+    }
+
+    public int getDistance()
+    {
+        return end-start-3;
     }
 }

@@ -44,13 +44,13 @@ public class TestSeqCounter
 		job.setOutputKeyClass(Text.class);		
 		
 		// Class of output value is IntWritable
-		job.setOutputValueClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
 		
 		// Input path is first argument when program called
-		FileInputFormat.addInputPath(job, new Path("dna-sample.txt"));
+		FileInputFormat.addInputPath(job, new Path("dna-short.txt"));
 		
 		// Output path is second argument when program called
-		FileOutputFormat.setOutputPath(job, new Path("sampleResults_test.txt"));
+		FileOutputFormat.setOutputPath(job, new Path("results_short.txt"));
 		
 		Mochadoop mh = new Mochadoop();
 		// Set the second parameter to true if you want to see the intermediate
@@ -60,6 +60,6 @@ public class TestSeqCounter
 		// will not be saved. Note that you will need to refresh your Eclipse
 		// project view (F5) to see any new files that may have been created by your program.
 		// mh.setNumMappers(3);
-		mh.runMapReduce(job,false);
+		mh.runMapReduce(job,true);
 	}  
 }
