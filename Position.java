@@ -1,6 +1,10 @@
-/** Class Position extends Pattern and 
-* @author Vasileios Bardakos
-*/
+/**
+ * The Position class extends Pattern and it stores the position (index) of a start and end tag (triplet).
+ * method getDistance returns the distance between the start protein and the end in our DNA sequence.
+ * 
+ * @author Vasileios Bardakos
+ *
+ */
 public class Position extends Pattern
 {
     private String value;
