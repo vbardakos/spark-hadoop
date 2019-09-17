@@ -23,7 +23,11 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import javax.sound.midi.Sequence;
 
 /**
- * Student ID: 2644751
+ * DNASeqCount contains the Mapper, Combiner and Reducer classes. Special thanks
+ * to Dr. David Cairns for providing a template to work on.
+ *
+ * @author Vasileios Bardakos
+ *
  */
 
 public class DNASeqCount
