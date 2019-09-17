@@ -2,7 +2,7 @@
  * The Pattern class stores a start and end tag that you will need to search for in the sample genome data.
  * The tags are provided when you create a new Pattern object and can be accessed later by the getStart() and
  * getEnd() methods. There is also a toString method that provides a String representation of the start and end
- * tags combined. See the SeqMapper.map method for an example of its use.
+ * tags combined.
  * 
  * @author David Cairns
  *
