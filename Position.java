@@ -1,3 +1,6 @@
+/** Class Position extends Pattern and 
+* @author Vasileios Bardakos
+*/
 public class Position extends Pattern
 {
     private String value;
