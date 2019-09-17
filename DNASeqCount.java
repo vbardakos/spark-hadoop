@@ -22,10 +22,6 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import javax.sound.midi.Sequence;
 
-/**
- * Student ID: 2644751
- */
-
 public class DNASeqCount
 {
 
@@ -101,8 +97,10 @@ public class DNASeqCount
 	    }
 
 	}
-
-	// The Combiner class
+	
+	/**
+	* Combiner Class
+	*/
 	public static class SeqCombiner extends Reducer<Text,TwoIntWritable,Text,TwoIntWritable>
 	{
 
@@ -125,8 +123,9 @@ public class DNASeqCount
 			context.write(key, myWritable);
 		}
 	}
-
-	// The Reducer class
+	/**
+	* Reducer Class
+	*/
 	public static class SeqReducer extends Reducer<Text,TwoIntWritable,Text,FloatWritable>
 	{
 
@@ -149,11 +148,11 @@ public class DNASeqCount
 	}
 
 
-//	  /**
-//	   * main program that will be run, including configuration setup
-//	   *
-//	   * @param args		Command line arguments
-//	   */
+	  /**
+	   * main program that will be run, including configuration setup
+	   *
+	   * @param args		Command line arguments
+	   */
 	  public static void main(String[] args) throws Exception
 	  {
 	    Configuration conf = new Configuration();
