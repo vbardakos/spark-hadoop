@@ -5,6 +5,17 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/**
+ * The TwoIntWritable class replaces apache's standard Writable and it aims to fill the
+ * needs of our task. It reads two integers and it writes a String with both integers.
+ * Input:
+ *      - distance  See Position class; getDistance method.
+ *      - count     A simple counter; essential to compute the average distance.
+ * Output: "distance / count"
+ * 
+ * @author Vasileios Bardakos
+ *
+ */
 public class TwoIntWritable implements Writable
 {
     private IntWritable distance;
