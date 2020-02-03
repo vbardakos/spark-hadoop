@@ -35,7 +35,7 @@ public class Pattern
 	/**
 	 * 	Returns the start tag
 	 */
-	public String getStart() { 	return start; }
+	public String getStart() { return start; }
 
 	/**
 	 * Returns the end tag
